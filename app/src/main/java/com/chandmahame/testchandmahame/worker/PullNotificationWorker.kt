@@ -13,6 +13,7 @@ class PullNotificationWorker @AssistedInject constructor(
 ) : Worker(appContext, params) {
     override fun doWork(): Result {
         try {
+
             return Result.failure()
 
         } catch (throwable: Throwable) {

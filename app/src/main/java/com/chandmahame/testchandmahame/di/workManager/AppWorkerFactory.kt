@@ -25,3 +25,4 @@ class AppWorkerFactory @Inject constructor(
 interface ChildWorkerFactory {
     fun create(appContext: Context, params: WorkerParameters): ListenableWorker
 }
+

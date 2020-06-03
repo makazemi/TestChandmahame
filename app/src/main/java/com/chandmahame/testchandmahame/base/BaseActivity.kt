@@ -2,10 +2,14 @@ package com.chandmahame.testchandmahame.base
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
+import javax.inject.Inject
 
 
 abstract class BaseActivity : AppCompatActivity(){
 
+    @Inject
+    lateinit var  viewModelFactory: ViewModelProvider.Factory
 
     abstract fun inject()
 

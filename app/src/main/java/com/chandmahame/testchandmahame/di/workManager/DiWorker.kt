@@ -26,10 +26,10 @@ interface WorkerBindingModule {
     @Binds
     @IntoMap
     @WorkerKey(SaveImageWorker::class)
-    fun bindMyWorker(worker: SaveImageWorker.Factory): ChildWorkerFactory
+    fun bindSaveImageWorker(worker: SaveImageWorker.Factory): ChildWorkerFactory
 
     @Binds
     @IntoMap
     @WorkerKey(PullNotificationWorker::class)
-    fun bindMyWorker(worker: PullNotificationWorker.Factory): ChildWorkerFactory
+    fun bindNotificationWorker(worker: PullNotificationWorker.Factory): ChildWorkerFactory
 }
