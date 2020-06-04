@@ -31,7 +31,7 @@ class CameraActivity : BaseActivity() {
         const val TAG="CameraTEST"
     }
     private lateinit var currentPhotoPath: String
-    val viewModel: CameraViewModel by viewModels {
+    private val viewModel: CameraViewModel by viewModels {
         viewModelFactory
     }
     override fun inject() {

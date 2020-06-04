@@ -8,16 +8,15 @@ class ViewPagerAdapter(fragment:Fragment) :FragmentStateAdapter(fragment) {
     override fun getItemCount(): Int =2
 
     override fun createFragment(position: Int): Fragment {
-        var fragment:Fragment=ListImageLocalFragment()
-        when(position){
+        return when(position){
             0 ->{
-                fragment=ListImageLocalFragment()
+                ListImageLocalFragment()
             }
             1 ->{
-                fragment=ListImageServerFragment()
+                ListImageServerFragment()
             }
+            else ->  ListImageLocalFragment()
         }
-        return fragment
     }
 
 }

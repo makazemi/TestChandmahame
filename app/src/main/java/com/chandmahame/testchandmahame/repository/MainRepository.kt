@@ -5,6 +5,7 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.Uri
 import android.service.autofill.Dataset
+import android.util.Log
 import androidx.core.net.toUri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
@@ -21,7 +22,9 @@ import java.io.FilenameFilter
 import javax.inject.Inject
 
 class MainRepository @Inject constructor(private val application:Application,private val apiService: ApiService) {
-
+    companion object{
+        const val TAG="MainRepository"
+    }
     fun getServerDairy():LiveData<DataState<List<Dairy>>>{
         return object :NetworkBoundResource<DairyResponse,List<Dairy>>(
             isConnectedToTheInternet(),
@@ -43,27 +46,35 @@ class MainRepository @Inject constructor(private val application:Application,pri
     }
 
     suspend fun getLocalDairy(path:String):LiveData<DataState<List<Dairy>>>{
-        val folder = application.getExternalFilesDir(Constant.OUTPUT_PATH)
-        val result=ArrayList<Dairy>()
+        val result = ArrayList<Dairy>()
+        withContext(Dispatchers.IO) {
+            val folder = application.getExternalFilesDir(path)
             folder?.let { destination ->
+                Log.d(TAG,"destinaton=$destination")
                 if (destination.exists()) {
                     var i = 1
                     val allFiles =
                         folder.listFiles(FilenameFilter { dir, name ->
-
                             if (name.endsWith(".jpg") || name.endsWith(".jpeg") || name.endsWith(".png")) {
-                                result.add(Dairy(i, Uri.fromFile(dir).toString(), name))
+                                result.add(Dairy(i, "${Uri.fromFile(dir)}/$name", name))
                                 i++
                             }
                             true
                         })
                 }
             }
-        return liveData<DataState<List<Dairy>>> {
-            emit(
-                DataState.data(result)
-            )
         }
+            return liveData<DataState<List<Dairy>>> {
+                emit(DataState.loading(true))
+                try {
+                    emit(DataState.data(result))
+                } catch(ioException: Exception) {
+                    emit(DataState.error(ErrorBody(message = "failed to load image")))
+                }
+
+
+            }
+
     }
     private fun isConnectedToTheInternet(): Boolean {
         val cm = application.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager

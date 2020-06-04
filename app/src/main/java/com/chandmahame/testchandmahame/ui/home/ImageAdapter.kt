@@ -25,6 +25,7 @@ class ImageAdapter(private val requestManager: RequestManager,private val type:I
             requestManager.load(item.imagePath)
                 .placeholder(R.drawable.ic_launcher_background)
                 .error(R.drawable.ic_launcher_background)
+                .override(200,200)
                 .into(itemView.img)
             else
                 requestManager.load(item.imagePath.toUri())

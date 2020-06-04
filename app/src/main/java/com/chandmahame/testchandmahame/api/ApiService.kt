@@ -11,7 +11,7 @@ import javax.inject.Singleton
 @Singleton
 interface ApiService {
 
-    @GET("5ed788d079382f568bd24eed")
+    @GET("5ed788d079382f568bd24eed/1")
     fun getListDairy(
         @Header("secret-key") token: String=SECRET_KEY
     ): LiveData<GenericApiResponse<DairyResponse>>
