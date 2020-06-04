@@ -51,7 +51,7 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
     def room_version = '2.2.5'
-    def retrofit_version = '2.6.0'
+    def retrofit_version = '2.9.0'
 
     /*Kotlin*/
     implementation "androidx.navigation:navigation-fragment-ktx:2.2.2"

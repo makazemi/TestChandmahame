@@ -12,10 +12,9 @@ import androidx.lifecycle.liveData
 import com.chandmahame.testchandmahame.api.ApiService
 import com.chandmahame.testchandmahame.model.Dairy
 import com.chandmahame.testchandmahame.model.DairyResponse
-import com.chandmahame.testchandmahame.util.AbsentLiveData
-import com.chandmahame.testchandmahame.util.ApiSuccessResponse
-import com.chandmahame.testchandmahame.util.Constant
-import com.chandmahame.testchandmahame.util.GenericApiResponse
+import com.chandmahame.testchandmahame.model.NotificationResponse
+import com.chandmahame.testchandmahame.util.*
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.FilenameFilter
@@ -76,6 +75,72 @@ class MainRepository @Inject constructor(private val application:Application,pri
             }
 
     }
+    suspend fun pullNotification():DataState<NotificationResponse> {
+
+        return when (val response = fetchCatching()) {
+
+            is ApiSuccessResponse -> {
+                Log.d(TAG, "response notif=$response")
+                DataState.data(response.body)
+            }
+            is ApiErrorResponse -> {
+                Log.d(TAG, "response notif=$response")
+                onErrorReturn(response.error)
+            }
+            is ApiEmptyResponse -> {
+                Log.d(TAG, "response notif=$response")
+                onErrorReturn(ErrorBody("204", "HTTP 204. Returned NOTHING."))
+            }
+        }
+
+    }
+    private suspend fun fetchCatching(): GenericApiResponse<NotificationResponse> {
+        return try {
+            apiService.getNotification()
+        } catch (ex: CancellationException) {
+            Log.d(TAG,"CancellationException=${ex.message}")
+            throw ex
+        } catch (ex: Throwable) {
+            Log.d(TAG,"Throwable=${ex.message}")
+            GenericApiResponse.create(ex)
+        }
+    }
+    private fun onErrorReturn(error:ErrorBody):DataState<NotificationResponse>{
+        var msg = error.message
+        if(msg == null){
+            msg = ErrorHandling.ERROR_UNKNOWN
+        }
+        else if(ErrorHandling.isNetworkError(msg)){
+            msg = ErrorHandling.ERROR_CHECK_NETWORK_CONNECTION
+        }
+
+      return DataState.error(ErrorBody(error.code,msg))
+    }
+//    fun test():LiveData<DataState<NotificationResponse>>{
+//        return object :NetworkBoundResource<NotificationResponse,NotificationResponse>(
+//            isConnectedToTheInternet(),
+//            true
+//        ){
+//            override suspend fun handleApiSuccessResponse(response: ApiSuccessResponse<NotificationResponse>) {
+//                Log.d(TAG,"api suces=${response.body}")
+//            }
+//
+//            override fun createCall(): LiveData<GenericApiResponse<NotificationResponse>> {
+//                return apiService.getNotification()
+//            }
+//
+//            override suspend fun createCacheRequestAndReturn() {
+//            }
+//
+//            override fun loadFromCache(): LiveData<NotificationResponse> = AbsentLiveData.create()
+//
+//            override suspend fun updateLocalDb(cacheObject: NotificationResponse?) {
+//            }
+//
+//            override fun shouldFetch(cacheObject: NotificationResponse?): Boolean = true
+//
+//        }.asLiveData()
+//    }
     private fun isConnectedToTheInternet(): Boolean {
         val cm = application.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         try {

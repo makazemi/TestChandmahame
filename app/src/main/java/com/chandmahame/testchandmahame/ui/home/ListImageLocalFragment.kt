@@ -2,6 +2,7 @@ package com.chandmahame.testchandmahame.ui.home
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -22,7 +23,7 @@ import javax.inject.Inject
 
 class ListImageLocalFragment : Fragment() {
     companion object{
-        const val TAG="ListImageServerFragment"
+        const val TAG="ListImageLocalFragment"
     }
 
     private lateinit var imageAdapter: ImageAdapter
@@ -45,6 +46,12 @@ class ListImageLocalFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         initRcy()
         subscribeObserverListImage()
+//        viewModel.notif.observe(viewLifecycleOwner, Observer {
+//            it?.data?.getContentIfNotHandled()?.let {
+//                Log.d(TAG,"respone=$it")
+//            }
+//            Log.d(TAG,"error=${it.error?.getContentIfNotHandled()}")
+//        })
     }
 
     private fun initRcy(){

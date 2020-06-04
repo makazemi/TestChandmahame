@@ -8,5 +8,8 @@ object Constant {
     const val BASE_URL= "https://api.jsonbin.io/b/"
     const val SECRET_KEY="\$2b\$10\$OHemtZUG4fv9HNWuLyYMwevCxkiePBwYg9AULr3wKdZz7E/kaQbzW"
     const val OUTPUT_PATH="Chandmahame"
+    const val CAMERA="camera"
+    const val HOME="home"
+    const val PULL_PERIODIC_NOTIFICATION_WORK_NAME="PULL_PERIODIC_NOTIFICATION_WORK_NAME"
 
 }

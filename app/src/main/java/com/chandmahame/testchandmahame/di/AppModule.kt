@@ -5,6 +5,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestManager
 import com.chandmahame.testchandmahame.api.ApiService
 import com.chandmahame.testchandmahame.repository.MainRepository
+import com.chandmahame.testchandmahame.util.ApiResponseCallAdapterFactory
 import com.chandmahame.testchandmahame.util.Constant.BASE_URL
 import com.chandmahame.testchandmahame.util.LiveDataCallAdapterFactory
 import dagger.Module
@@ -25,6 +26,7 @@ object AppModule{
             .baseUrl(BASE_URL)
             .addCallAdapterFactory(LiveDataCallAdapterFactory())
             .addConverterFactory(GsonConverterFactory.create())
+            .addCallAdapterFactory(ApiResponseCallAdapterFactory())
             .build()
     }
 

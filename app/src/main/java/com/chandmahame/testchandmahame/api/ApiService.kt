@@ -18,7 +18,7 @@ interface ApiService {
 
 
     @GET("5ed78cd160775a5685875f53")
-    fun getNotification(
+    suspend fun getNotification(
         @Header("secret-key") token: String=SECRET_KEY
-    ): LiveData<GenericApiResponse<NotificationResponse>>
+    ):GenericApiResponse<NotificationResponse>
 }

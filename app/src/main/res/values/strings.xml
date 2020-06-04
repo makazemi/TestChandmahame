@@ -3,4 +3,6 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="local_image">تصاویر گرفته شده</string>
     <string name="server_image">خاطرات</string>
+    <string name="fcm_notification_channel_id">pull_notification_channel_id</string>
+    <string name="fcm_notification_channel_name">pull_notification_channel_name</string>
 </resources>
