@@ -15,22 +15,20 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.RequestManager
 import com.chandmahame.testchandmahame.R
 import com.chandmahame.testchandmahame.base.BaseApplication
+import com.chandmahame.testchandmahame.base.BaseFragment
 import com.chandmahame.testchandmahame.repository.ErrorBody
 import com.chandmahame.testchandmahame.repository.Event
 import com.chandmahame.testchandmahame.repository.Loading
 import kotlinx.android.synthetic.main.fragment_list_image_local.*
 import javax.inject.Inject
 
-class ListImageLocalFragment : Fragment() {
+class ListImageLocalFragment : BaseFragment() {
     companion object{
         const val TAG="ListImageLocalFragment"
     }
 
     private lateinit var imageAdapter: ImageAdapter
-    @Inject
-    lateinit var requestManager: RequestManager
-    @Inject
-    lateinit var  viewModelFactory: ViewModelProvider.Factory
+
 
     private val viewModel: HomeViewModel by activityViewModels {
         viewModelFactory
@@ -46,12 +44,6 @@ class ListImageLocalFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         initRcy()
         subscribeObserverListImage()
-//        viewModel.notif.observe(viewLifecycleOwner, Observer {
-//            it?.data?.getContentIfNotHandled()?.let {
-//                Log.d(TAG,"respone=$it")
-//            }
-//            Log.d(TAG,"error=${it.error?.getContentIfNotHandled()}")
-//        })
     }
 
     private fun initRcy(){
@@ -69,16 +61,8 @@ class ListImageLocalFragment : Fragment() {
             onDataStateChange(it.loading,it.error)
         })
     }
-    private fun onDataStateChange(loading: Loading, error: Event<ErrorBody>?){
-        error?.let {
-            it.getContentIfNotHandled()?.let {
-                Toast.makeText(this.context,it.message, Toast.LENGTH_SHORT).show()
-            }
-        }
-        displayProgressBar(loading.isLoading)
 
-    }
-    private fun displayProgressBar(inProgress:Boolean){
+    override fun displayProgressBar(inProgress:Boolean){
         if(inProgress)
             progress_bar.visibility=View.VISIBLE
         else

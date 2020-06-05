@@ -5,6 +5,7 @@ import androidx.multidex.MultiDexApplication
 import androidx.work.*
 import com.chandmahame.testchandmahame.di.AppComponent
 import com.chandmahame.testchandmahame.di.DaggerAppComponent
+import com.chandmahame.testchandmahame.util.Constant.PULL_PERIODIC_NOTIFICATION_WORK_NAME
 import com.chandmahame.testchandmahame.worker.PullNotificationWorker
 import java.util.concurrent.TimeUnit
 
@@ -41,8 +42,8 @@ class BaseApplication: MultiDexApplication(){
                 .setConstraints(constraints)
                 .build()
         WorkManager.getInstance(this)
-            .enqueue(notificationRequest)
-        //    .enqueueUniquePeriodicWork(PULL_PERIODIC_NOTIFICATION_WORK_NAME,ExistingPeriodicWorkPolicy.REPLACE,saveRequest)
+           // .enqueue(notificationRequest)
+           .enqueueUniquePeriodicWork(PULL_PERIODIC_NOTIFICATION_WORK_NAME,ExistingPeriodicWorkPolicy.REPLACE,notificationRequest)
 
     }
 

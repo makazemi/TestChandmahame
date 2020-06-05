@@ -2,36 +2,25 @@ package com.chandmahame.testchandmahame.ui.home
 
 import android.content.Context
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.bumptech.glide.RequestManager
 import com.chandmahame.testchandmahame.R
 import com.chandmahame.testchandmahame.base.BaseApplication
-import com.chandmahame.testchandmahame.repository.ErrorBody
-import com.chandmahame.testchandmahame.repository.Event
-import com.chandmahame.testchandmahame.repository.Loading
+import com.chandmahame.testchandmahame.base.BaseFragment
 import com.chandmahame.testchandmahame.ui.home.ImageAdapter.Companion.SERVER_IMAGE
 import kotlinx.android.synthetic.main.fragment_list_image_server.*
-import javax.inject.Inject
 
 
-class ListImageServerFragment : Fragment() {
+class ListImageServerFragment : BaseFragment() {
     companion object{
         const val TAG="ListImageServerFragment"
     }
 
     private lateinit var imageAdapter: ImageAdapter
-    @Inject
-    lateinit var requestManager: RequestManager
-    @Inject
-    lateinit var  viewModelFactory: ViewModelProvider.Factory
 
     private val viewModel: HomeViewModel by activityViewModels {
         viewModelFactory
@@ -64,16 +53,8 @@ class ListImageServerFragment : Fragment() {
             onDataStateChange(it.loading,it.error)
         })
     }
-    private fun onDataStateChange(loading: Loading, error: Event<ErrorBody>?){
-        error?.let {
-            it.getContentIfNotHandled()?.let {
-               Toast.makeText(this.context,it.message,Toast.LENGTH_SHORT).show()
-            }
-        }
-        displayProgressBar(loading.isLoading)
 
-    }
-    private fun displayProgressBar(inProgress:Boolean){
+    override fun displayProgressBar(inProgress:Boolean){
         if(inProgress)
             progress_bar.visibility=View.VISIBLE
         else

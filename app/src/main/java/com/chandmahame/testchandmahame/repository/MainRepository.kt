@@ -44,7 +44,7 @@ class MainRepository @Inject constructor(private val application:Application,pri
         }.asLiveData()
     }
 
-    suspend fun getLocalDairy(path:String):LiveData<DataState<List<Dairy>>>{
+    suspend fun getLocalDairy(path:String):List<Dairy>{
         val result = ArrayList<Dairy>()
         withContext(Dispatchers.IO) {
             val folder = application.getExternalFilesDir(path)
@@ -63,17 +63,7 @@ class MainRepository @Inject constructor(private val application:Application,pri
                 }
             }
         }
-            return liveData<DataState<List<Dairy>>> {
-                emit(DataState.loading(true))
-                try {
-                    emit(DataState.data(result))
-                } catch(ioException: Exception) {
-                    emit(DataState.error(ErrorBody(message = "failed to load image")))
-                }
-
-
-            }
-
+        return result
     }
     suspend fun pullNotification():DataState<NotificationResponse> {
 
@@ -116,31 +106,6 @@ class MainRepository @Inject constructor(private val application:Application,pri
 
       return DataState.error(ErrorBody(error.code,msg))
     }
-//    fun test():LiveData<DataState<NotificationResponse>>{
-//        return object :NetworkBoundResource<NotificationResponse,NotificationResponse>(
-//            isConnectedToTheInternet(),
-//            true
-//        ){
-//            override suspend fun handleApiSuccessResponse(response: ApiSuccessResponse<NotificationResponse>) {
-//                Log.d(TAG,"api suces=${response.body}")
-//            }
-//
-//            override fun createCall(): LiveData<GenericApiResponse<NotificationResponse>> {
-//                return apiService.getNotification()
-//            }
-//
-//            override suspend fun createCacheRequestAndReturn() {
-//            }
-//
-//            override fun loadFromCache(): LiveData<NotificationResponse> = AbsentLiveData.create()
-//
-//            override suspend fun updateLocalDb(cacheObject: NotificationResponse?) {
-//            }
-//
-//            override fun shouldFetch(cacheObject: NotificationResponse?): Boolean = true
-//
-//        }.asLiveData()
-//    }
     private fun isConnectedToTheInternet(): Boolean {
         val cm = application.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         try {

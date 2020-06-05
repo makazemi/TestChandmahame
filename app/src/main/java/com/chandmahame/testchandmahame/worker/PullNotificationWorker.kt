@@ -84,7 +84,7 @@ class PullNotificationWorker @AssistedInject constructor(
                 .setDefaults(Notification.DEFAULT_ALL)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .build()
-        notificationManager.notify(0 /* ID of notification */, notification)
+        notificationManager.notify(0 , notification)
 
     }
     @AssistedInject.Factory

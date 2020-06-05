@@ -2,7 +2,6 @@ package com.chandmahame.testchandmahame.di.workManager
 
 import androidx.work.ListenableWorker
 import com.chandmahame.testchandmahame.worker.PullNotificationWorker
-import com.chandmahame.testchandmahame.worker.SaveImageWorker
 import com.squareup.inject.assisted.dagger2.AssistedModule
 import dagger.Binds
 import dagger.MapKey
@@ -22,11 +21,6 @@ annotation class WorkerKey(val value: KClass<out ListenableWorker>)
 
 @Module
 interface WorkerBindingModule {
-
-    @Binds
-    @IntoMap
-    @WorkerKey(SaveImageWorker::class)
-    fun bindSaveImageWorker(worker: SaveImageWorker.Factory): ChildWorkerFactory
 
     @Binds
     @IntoMap

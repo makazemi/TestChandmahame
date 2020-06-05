@@ -1,14 +1,13 @@
 package com.chandmahame.testchandmahame.ui.home
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
 import com.chandmahame.testchandmahame.model.Dairy
 import com.chandmahame.testchandmahame.repository.DataState
+import com.chandmahame.testchandmahame.repository.ErrorBody
 import com.chandmahame.testchandmahame.repository.MainRepository
 import com.chandmahame.testchandmahame.util.Constant.OUTPUT_PATH
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class HomeViewModel @Inject constructor(private val repository: MainRepository):ViewModel() {
@@ -16,8 +15,12 @@ class HomeViewModel @Inject constructor(private val repository: MainRepository):
     val dairyImage = repository.getServerDairy()
 
      val localImage= liveData<DataState<List<Dairy>>>(viewModelScope.coroutineContext) {
-            emitSource(repository.getLocalDairy(OUTPUT_PATH))
+         emit(DataState.loading(true))
+            try {
+                emit(DataState.data(repository.getLocalDairy(OUTPUT_PATH)))
+            } catch(ioException: Exception) {
+                emit(DataState.error(ErrorBody(message = "failed to load image")))
+            }
         }
 
- //  val notif=repository.test()
 }
