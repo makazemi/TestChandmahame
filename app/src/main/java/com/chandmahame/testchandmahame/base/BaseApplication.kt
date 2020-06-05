@@ -38,11 +38,10 @@ class BaseApplication: MultiDexApplication(){
             .build()
 
         val notificationRequest =
-            PeriodicWorkRequestBuilder<PullNotificationWorker>(40, TimeUnit.SECONDS)
+            PeriodicWorkRequestBuilder<PullNotificationWorker>(1, TimeUnit.HOURS)
                 .setConstraints(constraints)
                 .build()
         WorkManager.getInstance(this)
-           // .enqueue(notificationRequest)
            .enqueueUniquePeriodicWork(PULL_PERIODIC_NOTIFICATION_WORK_NAME,ExistingPeriodicWorkPolicy.REPLACE,notificationRequest)
 
     }
